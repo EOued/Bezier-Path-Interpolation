@@ -2,7 +2,6 @@
 #include "bezier.h"
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
-#include <iostream>
 #include <unistd.h>
 #include <vector>
 
@@ -13,8 +12,6 @@ void Path::addPoint(sf::Vector2f point)
 }
 
 std::vector<sf::Vector2f> Path::getPoints() { return this->points; }
-
-// Lerp
 
 double Lerp(double x, sf::Vector2f p0, sf::Vector2f p1)
 {
@@ -79,8 +76,7 @@ std::vector<sf::Vector2f> Path::LERP(int space)
   for (int i = 0; i < n - 1; i++)
   {
     interpolationAux = LERPAux(space, this->points[i], this->points[i + 1]);
-    interpolation.insert(interpolation.end(), interpolationAux.begin(),
-                         interpolationAux.end());
+    interpolation.insert(interpolation.end(), interpolationAux.begin(), interpolationAux.end());
   }
   return interpolation;
 }
@@ -94,11 +90,12 @@ std::vector<sf::Vector2f> Path::LERPSmoothed(int space, int dToP)
   sf::Vector2f controlPoint;
   sf::Vector2f startPoint;
   sf::Vector2f goalPoint;
+  sf::Vector2f start;
+  sf::Vector2f end;
   double dRatio;
   if (n == 2)
   {
-    std::vector<sf::Vector2f> lerp1 =
-        LERPAux(space, this->points[0], this->points[1]);
+    std::vector<sf::Vector2f> lerp1 = LERPAux(space, this->points[0], this->points[1]);
     interpolation.insert(interpolation.end(), lerp1.begin(), lerp1.end());
     return interpolation;
   }
@@ -108,40 +105,40 @@ std::vector<sf::Vector2f> Path::LERPSmoothed(int space, int dToP)
     distance     = maths.Distance(this->points[i], controlPoint);
     dRatio       = ((double)dToP) / distance;
 
-    startPoint = sf::Vector2f(
-        (1 - dRatio) * controlPoint.x + dRatio * this->points[i].x,
-        (1 - dRatio) * controlPoint.y + dRatio * this->points[i].y);
+    startPoint = sf::Vector2f((1 - dRatio) * controlPoint.x + dRatio * this->points[i].x,
+                              (1 - dRatio) * controlPoint.y + dRatio * this->points[i].y);
     if (dRatio < 0 || dRatio > 1) startPoint = this->points[i];
 
     distance = maths.Distance(controlPoint, this->points[i + 2]);
     dRatio   = ((double)dToP) / distance;
 
-    goalPoint = sf::Vector2f(
-        (1 - dRatio) * controlPoint.x + dRatio * this->points[i + 2].x,
-        (1 - dRatio) * controlPoint.y + dRatio * this->points[i + 2].y);
+    goalPoint = sf::Vector2f((1 - dRatio) * controlPoint.x + dRatio * this->points[i + 2].x,
+                             (1 - dRatio) * controlPoint.y + dRatio * this->points[i + 2].y);
     if (dRatio < 0 || dRatio > 1) goalPoint = this->points[i + 2];
 
-    // dToP *= (startPoint.y < goalPoint.y ? 1 : -1);
+    if (i == 0) start = this->points[i];
+    else
+    {
+      distance = maths.Distance(this->points[i], controlPoint);
+      dRatio   = ((double)dToP) / distance;
 
-    // double angle = atan2(controlPoint.y - this->points[i].y,
-    //                      controlPoint.x - this->points[i].x);
-    // std::cout << this->points[i].x << ' ' << this->points[i].y << ' '
-    //           << controlPoint.x << ' ' << controlPoint.y << atan2(-201, 561)
-    //           << '\n';
-    // startPoint = controlPoint +
-    //              sf::Vector2f(dToP * std::cos(angle), dToP *
-    //              std::sin(angle));
-    // angle     = atan2(this->points[i + 2].y - controlPoint.y,
-    //                   this->points[i + 2].x - controlPoint.x);
-    // goalPoint = controlPoint +
-    //             sf::Vector2f(dToP * std::cos(angle), dToP * std::sin(angle));
+      start = sf::Vector2f((1 - dRatio) * controlPoint.x + dRatio * this->points[i].x,
+                           (1 - dRatio) * controlPoint.y + dRatio * this->points[i].y);
+    }
 
-    std::vector<sf::Vector2f> lerp1 =
-        LERPAux(space, this->points[i], startPoint);
+    if (i == n - 3) end = this->points[i + 2];
+    else
+    {
+      distance = maths.Distance(controlPoint, this->points[i + 2]);
+      dRatio   = ((double)dToP) / distance;
+      end      = sf::Vector2f((1 - dRatio) * this->points[i + 2].x + dRatio * controlPoint.x,
+                              (1 - dRatio) * this->points[i + 2].y + dRatio * controlPoint.y);
+    }
+
+    std::vector<sf::Vector2f> lerp1 = LERPAux(space, start, startPoint);
     std::vector<sf::Vector2f> smooth =
         maths.QuadraticEvenBezier(startPoint, controlPoint, goalPoint, space);
-    std::vector<sf::Vector2f> lerp2 =
-        LERPAux(space, goalPoint, this->points[i + 2]);
+    std::vector<sf::Vector2f> lerp2 = LERPAux(space, goalPoint, end);
 
     interpolation.insert(interpolation.end(), lerp1.begin(), lerp1.end());
     interpolation.insert(interpolation.end(), smooth.begin(), smooth.end());
