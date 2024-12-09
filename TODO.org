@@ -1,0 +1,12 @@
+#+TITLE: TODO FILE
+#+AUTHOR: THANATOS
+#+OPTIONS: toc:nil
+
+* Game Neural Network
+** DONE Add stamina decreasing                                       :hunter:
+CLOSED: [2024-11-23 Sat 17:26]
+** DONE Change values of stamina when moving                         :hunter:
+CLOSED: [2024-11-23 Sat 17:27]
+** TODO Display stamina next to the prey                             :hunter:
+** DONE Make prey move accordingly to their speed                    :hunter:
+** TODO Make prey have lives                                         :hunter:
