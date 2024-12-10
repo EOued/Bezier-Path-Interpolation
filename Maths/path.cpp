@@ -20,7 +20,7 @@ double Lerp(double x, sf::Vector2f p0, sf::Vector2f p1)
 
 std::vector<sf::Vector2f> LERPAux(int space, sf::Vector2f p0, sf::Vector2f p1)
 {
-  Maths maths;
+  CBezier maths;
   std::vector<sf::Vector2f> interpolation;
   double distance = 0;
   sf::Vector2f point;
@@ -65,7 +65,7 @@ std::vector<sf::Vector2f> LERPAux(int space, sf::Vector2f p0, sf::Vector2f p1)
 
 std::vector<sf::Vector2f> Path::LERP(int space)
 {
-  Maths maths;
+  CBezier maths;
   int n = this->points.size();
   std::vector<sf::Vector2f> interpolation;
   std::vector<sf::Vector2f> interpolationAux;
@@ -83,7 +83,7 @@ std::vector<sf::Vector2f> Path::LERP(int space)
 
 std::vector<sf::Vector2f> Path::LERPSmoothed(int space, int dToP)
 {
-  Maths maths;
+  CBezier maths;
   int n = this->points.size();
   std::vector<sf::Vector2f> interpolation;
   double distance = 0;
@@ -108,7 +108,6 @@ std::vector<sf::Vector2f> Path::LERPSmoothed(int space, int dToP)
     startPoint = sf::Vector2f((1 - dRatio) * controlPoint.x + dRatio * this->points[i].x,
                               (1 - dRatio) * controlPoint.y + dRatio * this->points[i].y);
     if (dRatio < 0 || dRatio > 1) startPoint = this->points[i];
-
     distance = maths.Distance(controlPoint, this->points[i + 2]);
     dRatio   = ((double)dToP) / distance;
 

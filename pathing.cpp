@@ -21,22 +21,28 @@
 
 int main()
 {
-  // Initialisation of display class and maths class
-  Maths maths;
+  // Initialisation of display class, maths class, path class
+  CBezier maths;
   Path path;
   Display display;
   display.window.setFramerateLimit(60);
 
+  // Window loop
   while (display.window.isOpen())
   {
+
     // Clocking for deltaTime
     static sf::Clock clock;
     float deltaTime = clock.restart().asSeconds();
 
+    // To set a delay between clicks, avoiding the add of 10_000 buttons when clicking once
     static sf::Clock keypressHolding;
+
+    // Windows display
     display.window.display();
     display.window.clear();
 
+    // Displaying al points of the path.
     std::vector<sf::Vector2f> pts = path.getPoints();
     for (int i = 0; i < pts.size(); i++)
     {
@@ -48,6 +54,7 @@ int main()
       bezierPoint1.setPosition(pts[i]);
       display.LazyRender(&bezierPoint1);
     }
+
     // Linear interpolation
     std::vector<sf::Vector2f> points = path.LERP(10);
     sf::CircleShape lPoint(1);
@@ -77,7 +84,8 @@ int main()
     {
       path.addPoint(mousePosition);
       keypressHolding.restart();
-    } // Close event
+    }
+    // Close event
     if ((sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) &&
          sf::Keyboard::isKeyPressed(sf::Keyboard::C)))
       display.window.close();

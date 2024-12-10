@@ -3,13 +3,13 @@
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
 
-double Maths::Distance(sf::Vector2f p1, sf::Vector2f p2)
+double CBezier::Distance(sf::Vector2f p1, sf::Vector2f p2)
 {
   return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
 }
 
-sf::Vector2f Maths::Bezier(sf::Vector2f p0, sf::Vector2f p1, sf::Vector2f p2,
-                           sf::Vector2f p3, double t)
+sf::Vector2f CBezier::Bezier(sf::Vector2f p0, sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3,
+                             double t)
 {
   return sf::Vector2f(pow(1 - t, 3) * p0.x + 3 * pow(1 - t, 2) * t * p1.x +
                           3 * (1 - t) * pow(t, 2) * p2.x + pow(t, 3) * p3.x,
@@ -19,9 +19,8 @@ sf::Vector2f Maths::Bezier(sf::Vector2f p0, sf::Vector2f p1, sf::Vector2f p2,
   );
 }
 
-std::vector<sf::Vector2f> Maths::EvenBezier(sf::Vector2f p0, sf::Vector2f p1,
-                                            sf::Vector2f p2, sf::Vector2f p3,
-                                            double l)
+std::vector<sf::Vector2f> CBezier::EvenBezier(sf::Vector2f p0, sf::Vector2f p1, sf::Vector2f p2,
+                                              sf::Vector2f p3, double l)
 {
 
   // Initialisation of the vector to return
@@ -58,17 +57,14 @@ std::vector<sf::Vector2f> Maths::EvenBezier(sf::Vector2f p0, sf::Vector2f p1,
   return points;
 }
 
-sf::Vector2f Maths::QuadraticBezier(sf::Vector2f p0, sf::Vector2f p1,
-                                    sf::Vector2f p2, double t)
+sf::Vector2f CBezier::QuadraticBezier(sf::Vector2f p0, sf::Vector2f p1, sf::Vector2f p2, double t)
 {
-  return sf::Vector2f(
-      pow(1 - t, 2) * p0.x + 2 * (1 - t) * t * p1.x + pow(t, 2) * p2.x,
-      pow(1 - t, 2) * p0.y + 2 * (1 - t) * t * p1.y + pow(t, 2) * p2.y);
+  return sf::Vector2f(pow(1 - t, 2) * p0.x + 2 * (1 - t) * t * p1.x + pow(t, 2) * p2.x,
+                      pow(1 - t, 2) * p0.y + 2 * (1 - t) * t * p1.y + pow(t, 2) * p2.y);
 }
 
-std::vector<sf::Vector2f> Maths::QuadraticEvenBezier(sf::Vector2f p0,
-                                                     sf::Vector2f p1,
-                                                     sf::Vector2f p2, double l)
+std::vector<sf::Vector2f> CBezier::QuadraticEvenBezier(sf::Vector2f p0, sf::Vector2f p1,
+                                                       sf::Vector2f p2, double l)
 {
 
   // Initialisation of the vector to return

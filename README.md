@@ -1,9 +1,14 @@
-### Display a cubic bezier curve
+# CPP Bezier Path Interpolation
 
-Goal : adding N points evenly spaced on a curve
+This project was made by Elio OUEDRAOGO, aiming to visualize Path Smoothing with Bezier Curves.
+As it was a small project, there probably won't be any modifications in the future. This repository only serve as a showcase of the code.\
 
-#### Step 1 : Estimation of the length of the bezier curve
-- Compute each points for the bezier curve, get the length between a point and the older one, and sum with what we have. Call the length L
+## Usage of the code
 
-#### Step 2 : Adding the spaced points
-- Recompute the bezier curve, withkeeping track of the length of the current point and the oldest point. When we have the length wich is more than L/N, we add a point
+The first step is to make all cpp files using the command `make`.\
+Then, the execution of the `pathing` executable will pop a SFML. Clicking on it add the dots.
+To leave the renderer, simply press `<Ctrl-C>`.\
+
+![](path.png)
+
+Link to the documentation : [https://codedocs.xyz/EOued/Bezier-Path-Interpolation/](https://codedocs.xyz/EOued/Bezier-Path-Interpolation/)
